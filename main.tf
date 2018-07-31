@@ -9,7 +9,7 @@
  * -------
  *```hcl
  * module "dcos-vpc" {
- *   source  = "mesosphere/dcos-terraform/aws/vpc"
+ *   source  = "dcos-terraform/vpc/aws"
  *   version = "~> 0.1"
  *
  *   cluster_name = "production"
@@ -28,21 +28,17 @@ data "aws_availability_zones" "available" {}
 
 # Create a VPC to launch our instances into
 resource "aws_vpc" "dcos_vpc" {
-  provider = "aws"
-
-
   tags = "${merge(var.tags, map("Name", var.cluster_name,
                                 "Cluster", var.cluster_name))}"
-  cidr_block = "${var.subnet_range}"
-  enable_dns_support = true
+
+  cidr_block           = "${var.subnet_range}"
+  enable_dns_support   = true
   enable_dns_hostnames = true
 }
 
 # Create a subnet to launch our instances into
 resource "aws_subnet" "dcos_subnet" {
-  provider = "aws"
-
-  vpc_id = "${aws_vpc.dcos_vpc.id}"
+  vpc_id            = "${aws_vpc.dcos_vpc.id}"
   count             = "${length(var.availability_zones)}"
   cidr_block        = "${cidrsubnet(var.subnet_range, 4, count.index)}"
   availability_zone = "${element(coalescelist(var.availability_zones, data.aws_availability_zones.available.names), count.index)}"
@@ -55,8 +51,6 @@ resource "aws_subnet" "dcos_subnet" {
 
 # Create an internet gateway to give our subnet access to the outside world
 resource "aws_internet_gateway" "default" {
-  provider = "aws"
-
   vpc_id = "${aws_vpc.dcos_vpc.id}"
 
   tags = "${merge(var.tags, map("Name", var.cluster_name,
@@ -65,8 +59,6 @@ resource "aws_internet_gateway" "default" {
 
 # Grant the VPC internet access on its main route table
 resource "aws_route" "internet_access" {
-  provider = "aws"
-
   route_table_id         = "${aws_vpc.dcos_vpc.main_route_table_id}"
   destination_cidr_block = "0.0.0.0/0"
   gateway_id             = "${aws_internet_gateway.default.id}"

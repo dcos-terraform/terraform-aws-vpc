@@ -8,7 +8,7 @@ EXAMPLE
 -------
 ```hcl
 module "dcos-vpc" {
-  source  = "mesosphere/dcos-terraform/aws/vpc"
+  source  = "dcos-terraform/vpc/aws"
   version = "~> 0.1"
 
   cluster_name = "production"
@@ -35,7 +35,7 @@ module "dcos-vpc" {
 | Name | Description |
 |------|-------------|
 | aws_main_route_table_id | AWS Route table ID used in the Network |
-| network_id | Network ID - AWS vPC ID |
 | subnet_ids | List of subnet IDs created in this Network |
 | subnets | List of subnet IDs created in this Network |
+| vpc_id | AWS VPC ID |
 
