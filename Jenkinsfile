@@ -1,19 +1,21 @@
 pipeline {
   agent { label 'labelName' }
-  stage('FMT') {
-      steps {
-          sh 'terraform fmt --check'
-      }
+  stages {
+    stage('FMT') {
+        steps {
+            sh 'terraform fmt --check'
+        }
+    }
+    stage('Validate') {
+        steps {
+            sh 'terraform init'
+            sh 'terraform validate'
+        }
+    }
+    // stage('Deploy') {
+    //     steps {
+    //         echo 'Deploying....'
+    //     }
+    // }
   }
-  stage('Validate') {
-      steps {
-          sh 'terraform init'
-          sh 'terraform validate'
-      }
-  }
-  // stage('Deploy') {
-  //     steps {
-  //         echo 'Deploying....'
-  //     }
-  // }
 }
