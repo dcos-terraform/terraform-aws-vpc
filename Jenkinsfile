@@ -1,5 +1,5 @@
 node('terraform') {
-  stages {
+  pipeline {
         stage('FMT') {
             steps {
                 sh 'terraform fmt --check'
