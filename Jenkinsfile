@@ -1,5 +1,5 @@
 pipeline {
-  agent { label 'labelName' }
+  agent { label 'terraform' }
   stages {
     stage('FMT') {
         steps {
