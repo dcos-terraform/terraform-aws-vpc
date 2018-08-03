@@ -12,10 +12,5 @@ pipeline {
             sh 'terraform validate -check-variables=false'
         }
     }
-    // stage('Deploy') {
-    //     steps {
-    //         echo 'Deploying....'
-    //     }
-    // }
   }
 }
