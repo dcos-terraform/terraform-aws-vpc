@@ -25,10 +25,10 @@ module "dcos-vpc" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
-| availability_zones | Specify the availability zones to be used | list | `<list>` | no |
-| cluster_name | Specify the cluster name all resources get named and tagged with | string | `dcos-example` | no |
-| subnet_range | Specify the private ip space to be used in a CIDR format | string | `172.31.0.0/16` | no |
-| tags | Add special tags to the resources created by this module | map | `<map>` | no |
+| availability_zones | Availability zones to be used | list | `<list>` | no |
+| cluster_name | Cluster name all resources get named and tagged with | string | `dcos-example` | no |
+| subnet_range | Private IP space to be used in CIDR format | string | `172.31.0.0/16` | no |
+| tags | Custom tags added to the resources created by this module | map | `<map>` | no |
 
 ## Outputs
 
