@@ -6,7 +6,6 @@ variable "availability_zones" {
 
 variable "cluster_name" {
   description = "Cluster name all resources get named and tagged with"
-  default     = "dcos-example"
 }
 
 variable "subnet_range" {
