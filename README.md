@@ -26,16 +26,16 @@ module "dcos-vpc" {
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
 | availability_zones | Availability zones to be used | list | `<list>` | no |
-| cluster_name | Cluster name all resources get named and tagged with | string | `dcos-example` | no |
+| cluster_name | Name of the DC/OS cluster | string | - | yes |
 | subnet_range | Private IP space to be used in CIDR format | string | `172.31.0.0/16` | no |
-| tags | Custom tags added to the resources created by this module | map | `<map>` | no |
+| tags | Add custom tags to all resources | map | `<map>` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| aws_main_route_table_id | AWS Route table ID used in the Network |
-| subnet_ids | List of subnet IDs created in this Network |
+| aws_main_route_table_id | AWS main route table id |
+| subnet_ids | List of subnet IDs created in this network |
 | subnets | List of subnet IDs created in this Network |
 | vpc_id | AWS VPC ID |
 
