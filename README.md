@@ -1,11 +1,9 @@
-DC/OS VPC
-===========
+# DC/OS VPC
+
 This is an module to create a AWS VPC specially used for DC/OS
 
-This modules creates a subnet for every .
+## EXAMPLE
 
-EXAMPLE
--------
 ```hcl
 module "dcos-vpc" {
   source  = "dcos-terraform/vpc/aws"
@@ -19,7 +17,6 @@ module "dcos-vpc" {
   # }
 }
 ```
-
 
 ## Inputs
 
