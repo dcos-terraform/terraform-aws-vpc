@@ -9,7 +9,7 @@ EXAMPLE
 ```hcl
 module "dcos-vpc" {
   source  = "dcos-terraform/vpc/aws"
-  version = "~> 0.1"
+  version = "~> 0.1.0"
 
   cluster_name = "production"
   availability_zones = ["us-east-1b"]
