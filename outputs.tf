@@ -1,3 +1,8 @@
+output "cidr_block" {
+  description = "AWS vpc cidr_block"
+  value       = "${aws_vpc.dcos_vpc.cidr_block}"
+}
+
 output "aws_main_route_table_id" {
   description = "AWS main route table id"
   value       = "${aws_vpc.dcos_vpc.main_route_table_id}"
