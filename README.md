@@ -1,4 +1,3 @@
-
 DC/OS VPC
 ===========
 This is an module to create a AWS VPC specially used for DC/OS
