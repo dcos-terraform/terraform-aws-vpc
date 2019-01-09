@@ -1,5 +1,5 @@
 output "cidr_block" {
-  description = "AWS vpc cidr_block"
+  description = "Output the cidr_block used within this network"
   value       = "${aws_vpc.dcos_vpc.cidr_block}"
 }
 
