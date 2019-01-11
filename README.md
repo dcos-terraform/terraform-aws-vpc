@@ -35,6 +35,7 @@ module "dcos-vpc" {
 | Name | Description |
 |------|-------------|
 | aws_main_route_table_id | AWS main route table id |
+| cidr_block | Output the cidr_block used within this network |
 | subnet_ids | List of subnet IDs created in this network |
 | subnets | List of subnet IDs created in this Network |
 | vpc_id | AWS VPC ID |
