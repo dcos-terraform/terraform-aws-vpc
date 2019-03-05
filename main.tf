@@ -14,7 +14,7 @@
  *
  *   cluster_name = "production"
  *   availability_zones = ["us-east-1b"]
- *   subnet_range = "172.12.0.0/16"
+ *   subnet_range = "172.16.0.0/16"
  *   # providers {
  *   # aws = "aws.my-provider"
  *   # }
