@@ -18,3 +18,13 @@ variable "tags" {
   type        = "map"
   default     = {}
 }
+
+variable "existing_vpc_name" {
+  description = "Name of an existing VPC to deploy into"
+  default     = ""
+}
+
+variable "existing_subnet_prefix" {
+  description = "Prefix of existing VPC subnets to use"
+  default     = ""
+}
