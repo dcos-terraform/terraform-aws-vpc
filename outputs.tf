@@ -19,10 +19,10 @@ output "aws_main_route_table_id" {
 output "subnet_ids" {
   description = "List of subnet IDs created in this network"
 
-  value = "${length(var.existing_vpc_name) == 0 ?
-    join("", aws_subnet.dcos_subnet.*.id) :
-    join("", data.aws_subnet_ids.existing_subnet_ids.*.id)
-  }"
+  value = "${split(",", length(var.existing_vpc_name) == 0 ?
+    join(",", aws_subnet.dcos_subnet.*.id) :
+    join(",", flatten(data.aws_subnet_ids.existing_subnet_ids.*.ids))
+  )}"
 }
 
 output "vpc_id" {
