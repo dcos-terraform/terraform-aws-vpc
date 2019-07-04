@@ -25,7 +25,7 @@ module "dcos-vpc" {
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
 | cluster\_name | Name of the DC/OS cluster | string | n/a | yes |
-| availability\_zones | List of availability_zones to be used as the same format that are required by the platform/cloud providers. i.e ['RegionZone'] | list | `<list>` | no |
+| availability\_zones | List of availability_zones to be used as the same format that are required by the platform/cloud providers. i.e `['RegionZone']` | list | `<list>` | no |
 | subnet\_range | Private IP space to be used in CIDR format | string | `"172.31.0.0/16"` | no |
 | tags | Add custom tags to all resources | map | `<map>` | no |
 

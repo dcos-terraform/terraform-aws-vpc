@@ -1,5 +1,5 @@
 variable "availability_zones" {
-  description = "List of availability_zones to be used as the same format that are required by the platform/cloud providers. i.e ['RegionZone']"
+  description = "List of availability_zones to be used as the same format that are required by the platform/cloud providers. i.e `['RegionZone']`"
   type        = "list"
   default     = []
 }
