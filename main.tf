@@ -10,7 +10,7 @@
  *```hcl
  * module "dcos-vpc" {
  *   source  = "dcos-terraform/vpc/aws"
- *   version = "~> 0.2.0"
+ *   version = "~> 0.3.0"
  *
  *   cluster_name = "production"
  *   availability_zones = ["us-east-1b"]
@@ -21,45 +21,71 @@
  * }
  *```
  */
-provider "aws" {}
+provider "aws" {
+  version = ">= 2.0"
+}
 
 // if availability zones is not set request the available in this region
-data "aws_availability_zones" "available" {}
+data "aws_availability_zones" "available" {
+}
+
+locals {
+  availability_zones          = coalescelist(var.availability_zones, data.aws_availability_zones.available.names)
+  numbered_availability_zones = { for index, zone in local.availability_zones : index => zone }
+}
 
 # Create a VPC to launch our instances into
 resource "aws_vpc" "dcos_vpc" {
-  tags = "${merge(var.tags, map("Name", var.cluster_name,
-                                "Cluster", var.cluster_name))}"
+  tags = merge(
+    var.tags,
+    {
+      "Name"    = var.cluster_name
+      "Cluster" = var.cluster_name
+    },
+  )
 
-  cidr_block           = "${var.subnet_range}"
+  cidr_block           = var.subnet_range
   enable_dns_support   = true
   enable_dns_hostnames = true
 }
 
 # Create a subnet to launch our instances into
 resource "aws_subnet" "dcos_subnet" {
-  vpc_id            = "${aws_vpc.dcos_vpc.id}"
-  count             = "${length(var.availability_zones)}"
-  cidr_block        = "${cidrsubnet(var.subnet_range, 4, count.index)}"
-  availability_zone = "${element(coalescelist(var.availability_zones, data.aws_availability_zones.available.names), count.index)}"
+  for_each = local.numbered_availability_zones
+
+  vpc_id = aws_vpc.dcos_vpc.id
+
+  cidr_block        = cidrsubnet(var.subnet_range, 4, each.key)
+  availability_zone = each.value
 
   map_public_ip_on_launch = true
 
-  tags = "${merge(var.tags, map("Name", var.cluster_name,
-                                "Cluster", var.cluster_name))}"
+  tags = merge(
+    var.tags,
+    {
+      "Name"    = var.cluster_name
+      "Cluster" = var.cluster_name
+    },
+  )
 }
 
 # Create an internet gateway to give our subnet access to the outside world
 resource "aws_internet_gateway" "default" {
-  vpc_id = "${aws_vpc.dcos_vpc.id}"
+  vpc_id = aws_vpc.dcos_vpc.id
 
-  tags = "${merge(var.tags, map("Name", var.cluster_name,
-                                "Cluster", var.cluster_name))}"
+  tags = merge(
+    var.tags,
+    {
+      "Name"    = var.cluster_name
+      "Cluster" = var.cluster_name
+    },
+  )
 }
 
 # Grant the VPC internet access on its main route table
 resource "aws_route" "internet_access" {
-  route_table_id         = "${aws_vpc.dcos_vpc.main_route_table_id}"
+  route_table_id         = aws_vpc.dcos_vpc.main_route_table_id
   destination_cidr_block = "0.0.0.0/0"
-  gateway_id             = "${aws_internet_gateway.default.id}"
+  gateway_id             = aws_internet_gateway.default.id
 }
+
