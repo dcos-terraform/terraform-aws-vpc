@@ -31,7 +31,8 @@ data "aws_availability_zones" "available" {
 
 locals {
   availability_zones          = coalescelist(var.availability_zones, data.aws_availability_zones.available.names)
-  numbered_availability_zones = { for index, zone in local.availability_zones : index => zone }
+  numbered_availability_zones = { for index, zone in local.availability_zones : cidrsubnet(var.subnet_range, 4, index) => zone }
+  #numbered_availability_zones = { for index in local.availability_zones : cidrsubnet(var.subnet_range, 4, index) }
 }
 
 # Create a VPC to launch our instances into
@@ -55,7 +56,7 @@ resource "aws_subnet" "dcos_subnet" {
 
   vpc_id = aws_vpc.dcos_vpc.id
 
-  cidr_block        = cidrsubnet(var.subnet_range, 4, each.key)
+  cidr_block        = each.key
   availability_zone = each.value
 
   map_public_ip_on_launch = true
