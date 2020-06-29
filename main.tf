@@ -30,8 +30,8 @@ data "aws_availability_zones" "available" {
 }
 
 locals {
-  availability_zones          = coalescelist(var.availability_zones, data.aws_availability_zones.available.names)
-  numbered_availability_zones = { for index, zone in local.availability_zones : cidrsubnet(var.subnet_range, 4, index) => zone }
+  availability_zones = coalescelist(var.availability_zones, data.aws_availability_zones.available.names)
+  # numbered_availability_zones = { for index, zone in local.availability_zones : cidrsubnet(var.subnet_range, 4, index) => zone }
   #numbered_availability_zones = { for index in local.availability_zones : cidrsubnet(var.subnet_range, 4, index) }
 }
 
@@ -52,12 +52,12 @@ resource "aws_vpc" "dcos_vpc" {
 
 # Create a subnet to launch our instances into
 resource "aws_subnet" "dcos_subnet" {
-  for_each = local.numbered_availability_zones
+  count = length(local.availability_zones)
 
   vpc_id = aws_vpc.dcos_vpc.id
 
-  cidr_block        = each.key
-  availability_zone = each.value
+  cidr_block        = cidrsubnet(var.subnet_range, 4, count.index)
+  availability_zone = element(coalescelist(local.availability_zones, data.aws_availability_zones.available.names), count.index)
 
   map_public_ip_on_launch = true
 
@@ -89,4 +89,3 @@ resource "aws_route" "internet_access" {
   destination_cidr_block = "0.0.0.0/0"
   gateway_id             = aws_internet_gateway.default.id
 }
-
